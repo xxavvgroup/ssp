@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xG SSP - Creative Learning Platform</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Wix+Madefor+Display:wght@600;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <span class="highlight">xG</span> SSP
+        </div>
+        <div class="search-bar">
+            <input type="search" placeholder="Search courses...">
+        </div>
+        <div class="nav-links">
+            <button id="homeBtn">Home</button>
+            <button id="coursesBtn">Courses</button>
+            <button id="loginBtn">Login</button>
+            <button id="profileBtn" style="display: none;">Profile</button>
+            <button id="adminBtn" style="display: none;">Admin</button>
+        </div>
+    </nav>
+
+    <main>
+        <div id="homeSection" class="section">
+            <div class="hero">
+                <h1>Learn Creative Skills</h1>
+                <p class="subtitle">Join thousands of creators learning with xG SSP</p>
+            </div>
+            <h1>Welcome to xG SSP</h1>
+            <p>Discover creative courses and enhance your skills</p>
+            <div class="featured-courses"></div>
+        </div>
+
+        <div id="coursesSection" class="section" style="display: none;">
+            <h2>Available Courses</h2>
+            <div class="course-grid"></div>
+        </div>
+
+        <div id="loginSection" class="section" style="display: none;">
+            <h2>Login / Register</h2>
+            <form id="authForm">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" id="loginBtn">Login</button>
+                <button type="button" id="registerBtn">Register</button>
+            </form>
+        </div>
+
+        <div id="profileSection" class="section" style="display: none;">
+            <h2>My Profile</h2>
+            <div class="enrolled-courses"></div>
+        </div>
+        
+        <div id="courseDetailSection" class="section" style="display: none;">
+            <!-- Content will be dynamically inserted here -->
+        </div>
+
+        <div id="adminSection" class="section" style="display: none;">
+            <!-- Content will be dynamically inserted here -->
+        </div>
+    </main>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

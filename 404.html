@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | xG SSP</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Wix+Madefor+Display:wght@600;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to right, #232f3e, #37475a);
+        }
+        
+        .error-container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 600px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .error-code {
+            font-size: 8rem;
+            font-family: 'Wix Madefor Display', sans-serif;
+            color: var(--accent-color);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        
+        .error-message {
+            font-size: 2rem;
+            font-family: 'Wix Madefor Display', sans-serif;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .error-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .home-button {
+            background: var(--accent-color);
+            color: var(--text-primary);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Wix Madefor Display', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            margin-bottom: 2rem;
+            font-size: 1.75rem;
+            color: var(--primary-color);
+        }
+
+        .highlight {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-page">
+        <div class="error-container">
+            <div class="logo">
+                <span class="highlight">xG</span> SSP
+            </div>
+            <div class="error-code">404</div>
+            <h1 class="error-message">Page Not Found</h1>
+            <p class="error-description">
+                Oops! The page you're looking for seems to have taken a creative detour. 
+                Let's get you back to exploring our courses.
+            </p>
+            <a href="/" class="home-button">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
