@@ -1,5 +1,11 @@
+import { CourseManager } from './courses.js';
+
 export class UI {
     constructor() {
+        // Initialize CourseManager
+        this.courseManager = new CourseManager();
+        
+        // Initialize sections
         this.sections = {
             home: document.getElementById('homeSection'),
             courses: document.getElementById('coursesSection'),
@@ -9,6 +15,7 @@ export class UI {
             admin: document.getElementById('adminSection')
         };
 
+        // Initialize buttons
         this.buttons = {
             home: document.getElementById('homeBtn'),
             courses: document.getElementById('coursesBtn'),
@@ -23,10 +30,19 @@ export class UI {
         this.searchResults.className = 'search-results';
         document.querySelector('.search-bar').appendChild(this.searchResults);
         
-        this.setupSearch();
+        // Load courses before setting up search
+        this.initialize();
 
         // Add admin manager reference
         this.admin = null;
+    }
+
+    async initialize() {
+        // Load courses first
+        await this.courseManager.loadCourses();
+        
+        // Then setup search
+        this.setupSearch();
     }
 
     setupSearch() {
@@ -162,187 +178,6 @@ export class UI {
         this.buttons.profile.style.display = isLoggedIn ? 'inline' : 'none';
     }
 
-    displayCourseDetail(course) {
-        if (!course) {
-            window.location.href = '/404.html';
-            return;
-        }
-
-        const defaultValues = {
-            author: 'xxavvGroup',
-            authorTitle: 'xxavvGroup Course Instructor',
-            authorBio: 'Professional instructor from xxavvGroup with expertise in creative education.',
-            language: 'English',
-            videoHours: '4',
-            resources: '10',
-            price: 'Free',
-            requirements: [
-                'No prior experience needed',
-                'Basic computer skills',
-                'Willingness to learn'
-            ],
-            authorAvatar: 'https://via.placeholder.com/120?text=xG'
-        };
-
-        // Merge defaults with course data
-        course = { ...defaultValues, ...course };
-
-        const detailSection = this.sections.courseDetail;
-        detailSection.innerHTML = `
-            <div class="course-header">
-                <img src="${course.thumbnail || 'https://via.placeholder.com/1200x400'}" alt="${course.title}">
-                <div class="course-header-content">
-                    <div class="course-category">${course.category}</div>
-                    <h1>${course.title}</h1>
-                    <p class="course-subtitle">${course.description}</p>
-                    <div class="course-meta">
-                        <span class="meta-item">
-                            <i class="fas fa-user"></i>
-                            By ${course.author}
-                        </span>
-                        <span class="meta-item">
-                            <i class="fas fa-clock"></i>
-                            ${course.duration}
-                        </span>
-                        <span class="meta-item">
-                            <i class="fas fa-signal"></i>
-                            ${course.level}
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="course-content-wrapper">
-                <div class="course-main">
-                    <section class="course-about">
-                        <div class="section-header">
-                            <h2>About this course</h2>
-                            <div class="section-divider"></div>
-                        </div>
-                        <div class="rich-text">
-                            ${course.longDescription || course.description}
-                        </div>
-                    </section>
-
-                    <section class="course-curriculum">
-                        <div class="section-header">
-                            <h2>What you'll learn</h2>
-                            <div class="section-divider"></div>
-                        </div>
-                        <ul class="learning-objectives">
-                            ${(course.learningObjectives || []).map(obj => `
-                                <li>
-                                    <span class="objective-check">✓</span>
-                                    ${obj}
-                                </li>
-                            `).join('')}
-                        </ul>
-                    </section>
-
-                    <section class="course-requirements">
-                        <div class="section-header">
-                            <h2>Requirements</h2>
-                            <div class="section-divider"></div>
-                        </div>
-                        <ul class="requirements-list">
-                            <li>No prior experience needed</li>
-                            <li>Basic computer skills</li>
-                            ${course.requirements ? course.requirements.map(req => `<li>${req}</li>`).join('') : ''}
-                        </ul>
-                    </section>
-
-                    <section class="course-instructor">
-                        <div class="section-header">
-                            <h2>Your Instructor</h2>
-                            <div class="section-divider"></div>
-                        </div>
-                        <div class="instructor-card">
-                            <div class="instructor-avatar">
-                                ${course.authorAvatar ? 
-                                    `<img src="${course.authorAvatar}" alt="${course.author}">` :
-                                    `<div class="avatar-placeholder">${course.author.charAt(0)}</div>`
-                                }
-                            </div>
-                            <div class="instructor-info">
-                                <h3>${course.author}</h3>
-                                <p class="instructor-title">${course.authorTitle || 'Course Instructor'}</p>
-                                <p class="instructor-bio">${course.authorBio || 'Professional instructor with expertise in the subject matter.'}</p>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-
-                <aside class="course-sidebar">
-                    <div class="enrollment-card">
-                        <div class="price-section">
-                            ${course.price ? 
-                                `<div class="course-price">$${course.price}</div>` :
-                                '<div class="course-price free">Free</div>'
-                            }
-                        </div>
-                        <div class="course-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-book"></i>
-                                <span>${course.duration}</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-signal"></i>
-                                <span>${course.level}</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-globe"></i>
-                                <span>${course.language || 'English'}</span>
-                            </div>
-                        </div>
-                        <button class="enroll-btn primary-button" data-course-id="${course.id}">
-                            Enroll Now
-                        </button>
-                        <div class="includes-section">
-                            <h4>This course includes:</h4>
-                            <ul>
-                                <li>
-                                    <i class="fas fa-video"></i>
-                                    ${course.videoHours || '0'} hours on-demand video
-                                </li>
-                                <li>
-                                    <i class="fas fa-file"></i>
-                                    ${course.resources || '0'} downloadable resources
-                                </li>
-                                <li>
-                                    <i class="fas fa-infinity"></i>
-                                    Full lifetime access
-                                </li>
-                                <li>
-                                    <i class="fas fa-mobile-alt"></i>
-                                    Access on mobile and TV
-                                </li>
-                                <li>
-                                    <i class="fas fa-certificate"></i>
-                                    Certificate of completion
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </aside>
-            </div>
-        `;
-
-        // Add Font Awesome for icons
-        if (!document.querySelector('link[href*="font-awesome"]')) {
-            const fontAwesome = document.createElement('link');
-            fontAwesome.rel = 'stylesheet';
-            fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
-            document.head.appendChild(fontAwesome);
-        }
-
-        this.showSection('courseDetail');
-        
-        // Add enroll button listener
-        detailSection.querySelector('.enroll-btn').addEventListener('click', (e) => {
-            const courseId = e.target.dataset.courseId;
-            this.onEnrollCallback(courseId);
-        });
-    }
-
     displayCourses(courses, onEnroll) {
         const courseGrid = document.querySelector('.course-grid');
         courseGrid.innerHTML = '';
@@ -352,36 +187,52 @@ export class UI {
             const courseElement = document.createElement('div');
             courseElement.className = 'course-card';
             courseElement.innerHTML = `
-                <img src="${course.thumbnail || 'https://via.placeholder.com/300x160'}" alt="${course.title}">
+                <div class="course-preview">
+                    <img src="${course.thumbnail || 'https://via.placeholder.com/1200x600'}" alt="${course.title}">
+                    ${course.videoPreview ? `
+                        <button class="preview-video-btn">
+                            <i class="fas fa-play-circle"></i> Watch Preview
+                        </button>
+                    ` : ''}
+                    ${!course.price ? '<span class="course-badge free">Free</span>' : ''}
+                </div>
                 <div class="course-content">
-                    <h3>${course.title}</h3>
-                    <p>${course.description}</p>
-                    <p class="author">By: ${course.author}</p>
-                    <p>${course.duration} • ${course.level}</p>
-                    <div class="course-actions">
-                        <button class="view-course" data-course-id="${course.id}">View Course</button>
-                        <button class="enroll-btn" data-course-id="${course.id}">Enroll Now</button>
+                    <div class="course-category">
+                        <i class="fas fa-folder"></i> ${course.category}
+                    </div>
+                    <h3 class="course-title">${course.title}</h3>
+                    <div class="course-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <span>${course.enrollmentCount || 0} students</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-clock"></i>
+                            <span>${course.duration}</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-signal"></i>
+                            <span>${course.level}</span>
+                        </div>
+                    </div>
+                    <p class="course-description">${course.description}</p>
+                    <div class="course-footer">
+                        <div class="course-meta">
+                            <div class="course-author">
+                                <img src="${course.authorAvatar || 'https://via.placeholder.com/32x32'}" alt="${course.author}">
+                                <span>${course.author}</span>
+                            </div>
+                            <div class="course-price ${!course.price ? 'free' : ''}">
+                                ${course.price ? `$${course.price}` : 'Free'}
+                            </div>
+                        </div>
+                        <a href="/course.html?id=${course.id}" class="view-course-btn">
+                            View Course <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             `;
             courseGrid.appendChild(courseElement);
-        });
-
-        // Add event listeners
-        courseGrid.querySelectorAll('.view-course').forEach(button => {
-            button.addEventListener('click', () => {
-                const courseId = button.dataset.courseId;
-                window.history.pushState({ courseId }, '', `/course/${courseId}`);
-                const course = courses.find(c => c.id === courseId);
-                this.displayCourseDetail(course);
-            });
-        });
-
-        // Add event listeners to enroll buttons
-        document.querySelectorAll('.enroll-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                onEnroll(parseInt(button.dataset.courseId));
-            });
         });
     }
 
@@ -1053,6 +904,9 @@ export class UI {
                                 <td>${course.category}</td>
                                 <td>
                                     <button class="edit-course" data-id="${course.id}">Edit</button>
+                                    <a href="/editor.html?id=${course.id}" class="edit-content-link">
+                                        <button class="edit-content" data-id="${course.id}">Edit Content</button>
+                                    </a>
                                     <button class="delete-course" data-id="${course.id}">Delete</button>
                                 </td>
                             </tr>
@@ -1062,7 +916,7 @@ export class UI {
             </div>
         `;
 
-        // Reattach event listeners for course actions
+        // Reattach existing event listeners
         this.setupCourseActionListeners(callbacks);
     }
 
@@ -1099,262 +953,5 @@ export class UI {
                 }
             });
         });
-    }
-
-    async displayCourseEditor(courseId) {
-        const course = await this.courseManager.getCourse(courseId);
-        const adminSection = document.querySelector('.admin-main');
-
-        adminSection.innerHTML = `
-            <div class="admin-header">
-                <h2>Edit Course Content: ${course.title}</h2>
-                <button class="primary-button" id="saveCourseContent">
-                    <i class="fas fa-save"></i> Save Changes
-                </button>
-            </div>
-
-            <div class="course-editor">
-                <div class="editor-sidebar">
-                    <div class="editor-sections">
-                        <h3>Course Sections</h3>
-                        <div id="sectionsList"></div>
-                        <button class="add-item-btn" id="addSection">
-                            <i class="fas fa-plus"></i> Add Section
-                        </button>
-                    </div>
-                </div>
-
-                <div class="editor-main">
-                    <div id="contentEditor">
-                        <div class="empty-state">
-                            <i class="fas fa-edit"></i>
-                            <p>Select a section or lesson to edit its content</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        this.initializeCourseEditor(course);
-    }
-
-    async initializeCourseEditor(course) {
-        const sections = course.content?.sections || [];
-        const sectionsList = document.getElementById('sectionsList');
-
-        const renderSections = () => {
-            sectionsList.innerHTML = sections.map((section, sIndex) => `
-                <div class="editor-section" data-section="${sIndex}">
-                    <div class="section-header">
-                        <input type="text" class="section-title" value="${section.title}">
-                        <div class="section-actions">
-                            <button class="delete-section"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                    
-                    <div class="lesson-list">
-                        ${section.lessons.map((lesson, lIndex) => `
-                            <div class="editor-lesson" data-lesson="${lIndex}">
-                                <input type="text" class="lesson-title" value="${lesson.title}">
-                                <div class="lesson-actions">
-                                    <button class="edit-lesson"><i class="fas fa-edit"></i></button>
-                                    <button class="delete-lesson"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                    
-                    <button class="add-lesson-btn" data-section="${sIndex}">
-                        <i class="fas fa-plus"></i> Add Lesson
-                    </button>
-                </div>
-            `).join('');
-
-            // Add event listeners
-            this.setupEditorEventListeners(sections, course.id);
-        };
-
-        // Add Section button
-        document.getElementById('addSection').addEventListener('click', () => {
-            sections.push({
-                title: 'New Section',
-                lessons: []
-            });
-            renderSections();
-        });
-
-        // Initial render
-        renderSections();
-    }
-
-    setupEditorEventListeners(sections, courseId) {
-        // Section title changes
-        document.querySelectorAll('.section-title').forEach(input => {
-            input.addEventListener('change', (e) => {
-                const sectionIndex = e.target.closest('.editor-section').dataset.section;
-                sections[sectionIndex].title = e.target.value;
-            });
-        });
-
-        // Delete section
-        document.querySelectorAll('.delete-section').forEach(button => {
-            button.addEventListener('click', (e) => {
-                if (!confirm('Delete this section and all its lessons?')) return;
-                const sectionIndex = e.target.closest('.editor-section').dataset.section;
-                sections.splice(sectionIndex, 1);
-                this.initializeCourseEditor({ id: courseId, content: { sections } });
-            });
-        });
-
-        // Add lesson
-        document.querySelectorAll('.add-lesson-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const sectionIndex = e.target.dataset.section;
-                sections[sectionIndex].lessons.push({
-                    title: 'New Lesson',
-                    content: '',
-                    type: 'text',
-                    duration: '0:00'
-                });
-                this.initializeCourseEditor({ id: courseId, content: { sections } });
-            });
-        });
-
-        // Edit lesson
-        document.querySelectorAll('.edit-lesson').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const lessonEl = e.target.closest('.editor-lesson');
-                const sectionEl = lessonEl.closest('.editor-section');
-                const sectionIndex = sectionEl.dataset.section;
-                const lessonIndex = lessonEl.dataset.lesson;
-                const lesson = sections[sectionIndex].lessons[lessonIndex];
-
-                this.displayLessonEditor(lesson, sections, sectionIndex, lessonIndex);
-            });
-        });
-
-        // Save changes
-        document.getElementById('saveCourseContent').addEventListener('click', async () => {
-            try {
-                await this.admin.updateCourseContent(courseId, { sections });
-                this.showNotification('Course content saved successfully', 'success');
-            } catch (error) {
-                this.showNotification('Error saving course content', 'error');
-            }
-        });
-    }
-
-    displayLessonEditor(lesson, sections, sectionIndex, lessonIndex) {
-        const editor = document.getElementById('contentEditor');
-        
-        editor.innerHTML = `
-            <div class="lesson-editor">
-                <div class="editor-toolbar">
-                    <select id="lessonType">
-                        <option value="text" ${lesson.type === 'text' ? 'selected' : ''}>Text</option>
-                        <option value="video" ${lesson.type === 'video' ? 'selected' : ''}>Video</option>
-                        <option value="quiz" ${lesson.type === 'quiz' ? 'selected' : ''}>Quiz</option>
-                    </select>
-                    <input type="text" id="lessonDuration" placeholder="Duration (e.g., 5:30)" 
-                           value="${lesson.duration || '0:00'}">
-                </div>
-
-                <div class="editor-content">
-                    ${this.getLessonEditorByType(lesson)}
-                </div>
-
-                <div class="editor-actions">
-                    <button class="primary-button" id="saveLessonBtn">Save Lesson</button>
-                </div>
-            </div>
-        `;
-
-        // Handle lesson type changes
-        document.getElementById('lessonType').addEventListener('change', (e) => {
-            lesson.type = e.target.value;
-            document.querySelector('.editor-content').innerHTML = this.getLessonEditorByType(lesson);
-        });
-
-        // Handle lesson save
-        document.getElementById('saveLessonBtn').addEventListener('click', () => {
-            lesson.type = document.getElementById('lessonType').value;
-            lesson.duration = document.getElementById('lessonDuration').value;
-            
-            switch (lesson.type) {
-                case 'text':
-                    lesson.content = document.getElementById('textContent').value;
-                    break;
-                case 'video':
-                    lesson.videoUrl = document.getElementById('videoUrl').value;
-                    break;
-                case 'quiz':
-                    lesson.questions = this.getQuizQuestions();
-                    break;
-            }
-
-            sections[sectionIndex].lessons[lessonIndex] = lesson;
-            this.showNotification('Lesson saved', 'success');
-        });
-    }
-
-    getLessonEditorByType(lesson) {
-        switch (lesson.type) {
-            case 'text':
-                return `
-                    <textarea id="textContent" class="lesson-text-editor" rows="20">${lesson.content || ''}</textarea>
-                `;
-            case 'video':
-                return `
-                    <div class="video-editor">
-                        <input type="url" id="videoUrl" placeholder="Video URL" value="${lesson.videoUrl || ''}">
-                        <div class="video-preview">
-                            ${lesson.videoUrl ? `<iframe src="${lesson.videoUrl}" frameborder="0" allowfullscreen></iframe>` : ''}
-                        </div>
-                    </div>
-                `;
-            case 'quiz':
-                return `
-                    <div class="quiz-editor">
-                        <div id="questionsList">
-                            ${(lesson.questions || []).map((q, i) => this.renderQuizQuestion(q, i)).join('')}
-                        </div>
-                        <button class="add-item-btn" id="addQuestion">
-                            <i class="fas fa-plus"></i> Add Question
-                        </button>
-                    </div>
-                `;
-            default:
-                return '<p>Unsupported lesson type</p>';
-        }
-    }
-
-    renderQuizQuestion(question = {}, index) {
-        return `
-            <div class="quiz-question" data-index="${index}">
-                <input type="text" class="question-text" placeholder="Question" value="${question.text || ''}">
-                <div class="options-list">
-                    ${(question.options || ['', '', '', '']).map((opt, i) => `
-                        <div class="option-item">
-                            <input type="text" class="option-text" placeholder="Option ${i + 1}" value="${opt}">
-                            <input type="radio" name="correct_${index}" value="${i}" ${question.correctAnswer === i ? 'checked' : ''}>
-                        </div>
-                    `).join('')}
-                </div>
-                <button class="delete-question"><i class="fas fa-trash"></i></button>
-            </div>
-        `;
-    }
-
-    getQuizQuestions() {
-        const questions = [];
-        document.querySelectorAll('.quiz-question').forEach(questionEl => {
-            const question = {
-                text: questionEl.querySelector('.question-text').value,
-                options: Array.from(questionEl.querySelectorAll('.option-text')).map(opt => opt.value),
-                correctAnswer: parseInt(questionEl.querySelector('input[type="radio"]:checked')?.value || 0)
-            };
-            questions.push(question);
-        });
-        return questions;
     }
 }

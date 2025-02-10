@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Editor - xG SSP</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Wix+Madefor+Display:wght@600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/editor.css">
+</head>
+<body>
+    <div class="editor-layout">
+        <header class="editor-header">
+            <div class="editor-header-left">
+                <a href="/" class="logo">
+                    <span class="highlight">xG</span> SSP
+                </a>
+                <h1 id="courseTitle">Loading course...</h1>
+            </div>
+            <div class="editor-actions">
+                <button id="previewBtn" class="secondary-button">
+                    <i class="fas fa-eye"></i> Preview
+                </button>
+                <button id="saveBtn" class="primary-button">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+                <button id="backBtn" class="secondary-button">
+                    <i class="fas fa-arrow-left"></i> Back to Admin
+                </button>
+            </div>
+        </header>
+        
+        <div class="editor-container">
+            <aside class="editor-sidebar">
+                <div class="editor-sections">
+                    <div class="sections-header">
+                        <h3>Course Sections</h3>
+                        <button id="addSectionBtn" class="add-section-btn">
+                            <i class="fas fa-plus"></i> Add Section
+                        </button>
+                    </div>
+                    <div id="sectionsList" class="sections-list"></div>
+                </div>
+            </aside>
+
+            <main class="editor-main">
+                <div id="contentEditor"></div>
+            </main>
+        </div>
+    </div>
+    <script type="module" src="js/editor.js"></script>
+</body>
+</html>

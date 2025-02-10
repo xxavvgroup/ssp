@@ -4,7 +4,7 @@ import {
     signInWithEmailAndPassword,
     signOut
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-import { doc, setDoc, updateDoc, arrayUnion } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { doc, setDoc, updateDoc, arrayUnion, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 export class Auth {
     constructor() {
@@ -68,6 +68,17 @@ export class Auth {
             return true;
         } catch (error) {
             console.error('Enrollment error:', error);
+            return false;
+        }
+    }
+
+    async isAdmin() {
+        if (!this.user) return false;
+        try {
+            const userDoc = await getDoc(doc(db, 'users', this.user.uid));
+            return userDoc.data()?.isAdmin || false;
+        } catch (error) {
+            console.error('Error checking admin status:', error);
             return false;
         }
     }

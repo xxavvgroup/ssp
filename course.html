@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details - xG SSP</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Wix+Madefor+Display:wght@600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/course.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">
+            <span class="highlight">xG</span> SSP
+        </a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/courses.html" class="nav-link">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Browse Courses</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="course-breadcrumb">
+        <div class="container">
+            <a href="/courses.html">All Courses</a>
+            <i class="fas fa-chevron-right"></i>
+            <span id="categoryBreadcrumb">Category</span>
+        </div>
+    </div>
+
+    <main id="courseContent" class="course-container">
+        <div class="course-grid">
+            <div class="course-preview">
+                <!-- Course preview image/video will be inserted here -->
+            </div>
+            
+            <div class="course-info">
+                <!-- Course title and main info will be inserted here -->
+            </div>
+            
+            <div class="course-enrollment">
+                <!-- Enrollment card will be inserted here -->
+            </div>
+        </div>
+
+        <div class="course-details">
+            <div class="course-tabs">
+                <button class="tab-button active" data-tab="overview">Overview</button>
+                <button class="tab-button" data-tab="curriculum">Curriculum</button>
+                <button class="tab-button" data-tab="instructor">Instructor</button>
+                <button class="tab-button" data-tab="reviews">Reviews</button>
+            </div>
+
+            <div class="tab-content" id="overviewTab">
+                <!-- Course overview content will be inserted here -->
+            </div>
+
+            <div class="tab-content hidden" id="curriculumTab">
+                <!-- Course curriculum will be inserted here -->
+            </div>
+
+            <div class="tab-content hidden" id="instructorTab">
+                <!-- Instructor info will be inserted here -->
+            </div>
+
+            <div class="tab-content hidden" id="reviewsTab">
+                <!-- Reviews will be inserted here -->
+            </div>
+        </div>
+
+        <div class="related-courses">
+            <h2>Related Courses</h2>
+            <div class="related-grid">
+                <!-- Related courses will be inserted here -->
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="js/course.js"></script>
+</body>
+</html>
